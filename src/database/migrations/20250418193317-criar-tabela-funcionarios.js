@@ -9,13 +9,20 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      usuario_id: {
+        type: Sequelize.UUID,
+        allowNull: false, // FK obrigatória
+        references: { model: 'usuarios', key: 'id' }, // Relacionamento com a tabela `users`
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
       nome: {
         type: Sequelize.STRING,
         allowNull: false, // Nome obrigatório
       },
       cpf: {
         type: Sequelize.STRING,
-        allowNull: true, // CPF obrigatório
+        allowNull: true, // CPF opcional
         unique: true, // CPF único
       },
       email: {

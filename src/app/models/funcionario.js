@@ -4,6 +4,12 @@ class Funcionario extends Model {
   static init(sequelize) {
     super.init(
       {
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4, // Gera automaticamente um UUID
+          primaryKey: true,
+          allowNull: false,
+        },
         usuario_id: {
           type: Sequelize.UUID,
           allowNull: false,
