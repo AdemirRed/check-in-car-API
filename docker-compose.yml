@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: check-in-car
+    environment:
+      POSTGRES_USER: check-in-car
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '3010:5432'
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
