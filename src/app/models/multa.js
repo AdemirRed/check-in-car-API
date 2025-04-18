@@ -20,11 +20,11 @@ class Multa extends Model {
         descricao: Sequelize.STRING,
         valor: Sequelize.DECIMAL,
         paga: Sequelize.BOOLEAN,
-        criado_em: {
+        created_at: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
-        atualizado_em: {
+        updated_at: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
@@ -32,7 +32,7 @@ class Multa extends Model {
       {
         sequelize,
         tableName: 'multas',
-        timestamps: false,
+        timestamps: true,
       },
     );
   }

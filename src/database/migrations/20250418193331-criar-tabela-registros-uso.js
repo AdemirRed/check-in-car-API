@@ -15,7 +15,7 @@ module.exports = {
           model: 'funcionarios',
           key: 'id',
         },
-        allowNull: false,
+        allowNull: false, // O funcionário é obrigatório
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
@@ -25,20 +25,29 @@ module.exports = {
           model: 'veiculos',
           key: 'id',
         },
-        allowNull: false,
+        allowNull: false, // O veículo é obrigatório
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      finalidade: Sequelize.STRING,
+      finalidade: {
+        type: Sequelize.STRING,
+        allowNull: true, // A finalidade pode deve ser obrigatória
+      },
       destino: Sequelize.STRING,
-      data_hora_saida: Sequelize.DATE,
-      data_hora_retorno: Sequelize.DATE,
+      data_hora_saida: {
+        type: Sequelize.DATE,
+        allowNull: false, // A data e hora de saída devem ser obrigatórias
+      },
+      data_hora_retorno: {
+        type: Sequelize.DATE,
+        allowNull: false, // A data e hora de retorno também devem ser obrigatórias
+      },
       observacoes: Sequelize.TEXT,
-      criado_em: {
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
-      atualizado_em: {
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },

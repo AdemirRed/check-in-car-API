@@ -17,11 +17,11 @@ class RegistroUso extends Model {
         data_hora_saida: Sequelize.DATE,
         data_hora_retorno: Sequelize.DATE,
         observacoes: Sequelize.TEXT,
-        criado_em: {
+        created_at: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
-        atualizado_em: {
+        updated_at: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
@@ -29,7 +29,7 @@ class RegistroUso extends Model {
       {
         sequelize,
         tableName: 'registros_uso',
-        timestamps: false,
+        timestamps: true,
       },
     );
   }

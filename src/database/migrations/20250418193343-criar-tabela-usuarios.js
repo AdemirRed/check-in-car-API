@@ -9,23 +9,29 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      nome: Sequelize.STRING,
+      nome: {
+        type: Sequelize.STRING,
+        allowNull: false,  // Nome não pode ser nulo
+      },
       email: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false,
+        allowNull: false,  // Email não pode ser nulo
       },
-      senha_hash: Sequelize.STRING,
+      senha_hash: {
+        type: Sequelize.STRING,
+        allowNull: false,  // Senha não pode ser nula
+      },
       papel: {
         type: Sequelize.ENUM('admin', 'usuario'),
         allowNull: false,
         defaultValue: 'usuario',
       },
-      criado_em: {
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
-      atualizado_em: {
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },

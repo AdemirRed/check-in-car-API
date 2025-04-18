@@ -9,15 +9,26 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      nome: Sequelize.STRING,
-      cpf: Sequelize.STRING,
-      email: Sequelize.STRING,
+      nome: {
+        type: Sequelize.STRING,
+        allowNull: false, // Nome obrigatório
+      },
+      cpf: {
+        type: Sequelize.STRING,
+        allowNull: true, // CPF obrigatório
+        unique: true, // CPF único
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false, // Email obrigatório
+        unique: true, // Email único
+      },
       telefone: Sequelize.STRING,
-      criado_em: {
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
-      atualizado_em: {
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },

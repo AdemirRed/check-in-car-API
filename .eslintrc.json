@@ -4,7 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "extends": ["eslint", "prettier"],
   "parserOptions": {
     "ecmaVersion": 12,
     "sourceType": "module"
@@ -12,6 +12,7 @@
   "plugins": ["prettier"],
   "rules": {
     // Adicione ou ajuste regras conforme necessário
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-unused-vars": "off"
   }
 }

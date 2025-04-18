@@ -21,19 +21,12 @@ class User extends Model {
           type: Sequelize.ENUM('admin', 'usuario'),
           defaultValue: 'usuario',
         },
-        criado_em: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
-        atualizado_em: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
+        
       },
       {
         sequelize,
         tableName: 'usuarios', // Definir o nome da tabela explicitamente
-        timestamps: false, // Desabilitar timestamps automáticos, pois você tem campos personalizados
+        timestamps: true, // Desabilitar timestamps automáticos, pois você tem campos personalizados
       },
     );
   }

@@ -9,17 +9,35 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      placa: { type: Sequelize.STRING, unique: true },
-      marca: Sequelize.STRING,
-      modelo: Sequelize.STRING,
+      placa: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false, // A placa deve ser obrigatória
+      },
+      marca: {
+        type: Sequelize.STRING,
+        allowNull: false, // Marca do veículo também obrigatória
+      },
+      modelo: {
+        type: Sequelize.STRING,
+        allowNull: true, // Modelo do veículo 
+      },
       cor: Sequelize.STRING,
-      renavam: Sequelize.STRING,
-      status: Sequelize.STRING,
-      criado_em: {
+      renavam: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: true, // RENAVAM 
+      },
+      status: {
+        type: Sequelize.ENUM('ativo', 'inativo', 'em manutenção'),
+        allowNull: false, // Status obrigatória
+        defaultValue: 'ativo', // Default 'ativo'
+      },
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
-      atualizado_em: {
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },

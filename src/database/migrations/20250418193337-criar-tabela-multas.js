@@ -15,7 +15,7 @@ module.exports = {
           model: 'veiculos',
           key: 'id',
         },
-        allowNull: false,
+        allowNull: false, // O veículo é obrigatório
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
@@ -25,7 +25,7 @@ module.exports = {
           model: 'registros_uso',
           key: 'id',
         },
-        allowNull: true,
+        allowNull: true,  // Pode ser nulo, caso não haja registro de uso
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
@@ -35,19 +35,25 @@ module.exports = {
           model: 'funcionarios',
           key: 'id',
         },
-        allowNull: true,
+        allowNull: true,  // Pode ser nulo, caso não haja responsável identificado
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      data_multa: Sequelize.DATE,
+      data_multa: {
+        type: Sequelize.DATE,
+        allowNull: false, // Data da multa não pode ser nula
+      },
       descricao: Sequelize.STRING,
-      valor: Sequelize.DECIMAL,
+      valor: {
+        type: Sequelize.DECIMAL,
+        allowNull: false, // O valor da multa não pode ser nulo
+      },
       paga: Sequelize.BOOLEAN,
-      criado_em: {
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
-      atualizado_em: {
+      updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },

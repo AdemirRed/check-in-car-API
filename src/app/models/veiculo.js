@@ -14,11 +14,11 @@ class Veiculo extends Model {
         cor: Sequelize.STRING,
         renavam: Sequelize.STRING,
         status: Sequelize.STRING, // "disponível", "em uso", "manutenção", etc.
-        criado_em: {
+        created_at: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
-        atualizado_em: {
+        updated_at: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
@@ -26,7 +26,7 @@ class Veiculo extends Model {
       {
         sequelize,
         tableName: 'veiculos',
-        timestamps: false, // Usando campos customizados de data
+        timestamps: true, // Usando campos customizados de data
       },
     );
   }

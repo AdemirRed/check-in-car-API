@@ -12,19 +12,12 @@ class Funcionario extends Model {
         cpf: Sequelize.STRING,
         email: Sequelize.STRING,
         telefone: Sequelize.STRING,
-        criado_em: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
-        atualizado_em: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
+        // Remova os campos `created_at` e `updated_at` do modelo, pois o Sequelize já os gerencia automaticamente
       },
       {
         sequelize,
-        tableName: 'funcionarios',
-        timestamps: false,
+        tableName: 'funcionarios', // Certifique-se de que o nome da tabela está correto
+        timestamps: true, // Garante que o Sequelize gerencie `createdAt` e `updatedAt`
       },
     );
   }
