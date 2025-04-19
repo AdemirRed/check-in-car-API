@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste API de Check-ins de Veículos</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .section {
+        flex: 1 1 400px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      h2 {
+        margin-top: 0;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .token-section {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      .result {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+      .config-section {
+        background-color: #e9f7ef;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #c3e6cb;
+      }
+      pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Teste da API de Check-ins de Veículos</h1>
+
+    <!-- Nova seção de Configuração da API -->
+    <div class="config-section">
+      <h2>Configuração da API</h2>
+      <div class="form-group">
+        <label for="api-base-url">URL Base da API:</label>
+        <input
+          type="text"
+          id="api-base-url"
+          value="http://192.168.0.200:3001"
+          placeholder="Ex.: http://192.168.0.200:3001"
+        />
+      </div>
+      <button id="save-config-btn">Salvar Configuração</button>
+      <div id="config-status"></div>
+    </div>
+
+    <div class="token-section">
+      <h2>Token JWT</h2>
+      <div class="form-group">
+        <label for="jwt-token">Token de Autenticação:</label>
+        <input
+          type="text"
+          id="jwt-token"
+          placeholder="Cole seu token JWT aqui"
+        />
+      </div>
+      <div id="token-info"></div>
+    </div>
+
+    <div class="container">
+      <!-- Seção de Login -->
+      <div class="section">
+        <h2>Login</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email:</label>
+            <input type="email" id="login-email" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Senha:</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-result" class="result"></div>
+      </div>
+
+      <!-- Seção de Criar Usuário -->
+      <div class="section">
+        <h2>Criar Novo Usuário</h2>
+        <form id="create-user-form">
+          <div class="form-group">
+            <label for="user-name">Nome:</label>
+            <input type="text" id="user-name" required />
+          </div>
+          <div class="form-group">
+            <label for="user-email">Email:</label>
+            <input type="email" id="user-email" required />
+          </div>
+          <div class="form-group">
+            <label for="user-password">Senha:</label>
+            <input type="password" id="user-password" required />
+          </div>
+          <div class="form-group">
+            <label for="user-role">Papel:</label>
+            <select id="user-role" required>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+          </div>
+          <button type="submit">Cadastrar Usuário</button>
+        </form>
+        <div id="create-user-result" class="result"></div>
+      </div>
+
+      <!-- Seção de Criar Funcionário -->
+      <div class="section">
+        <h2>Criar Funcionário</h2>
+        <form id="create-employee-form">
+          <div class="form-group">
+            <label for="employee-name">Nome:</label>
+            <input type="text" id="employee-name" required />
+          </div>
+          <div class="form-group">
+            <label for="employee-cpf">CPF:</label>
+            <input type="text" id="employee-cpf" required />
+          </div>
+          <div class="form-group">
+            <label for="employee-email">Email:</label>
+            <input type="email" id="employee-email" required />
+          </div>
+          <div class="form-group">
+            <label for="employee-phone">Telefone:</label>
+            <input type="text" id="employee-phone" required />
+          </div>
+          <div class="form-group">
+            <label for="employee-user-id">ID do Usuário:</label>
+            <input type="text" id="employee-user-id" required />
+          </div>
+          <button type="submit">Cadastrar Funcionário</button>
+        </form>
+        <div id="create-employee-result" class="result"></div>
+      </div>
+
+      <!-- Seção de Listar Funcionários -->
+      <div class="section">
+        <h2>Listar Funcionários</h2>
+        <button id="list-employees-btn">Buscar Funcionários</button>
+        <div id="employees-list-result" class="result">
+          <table id="employees-table" style="display: none">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Email</th>
+                <th>Telefone</th>
+              </tr>
+            </thead>
+            <tbody id="employees-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Seção de Cadastrar Carro -->
+      <div class="section">
+        <h2>Cadastrar Carro</h2>
+        <form id="create-car-form">
+          <div class="form-group">
+            <label for="car-model">Modelo:</label>
+            <input type="text" id="car-model" required />
+          </div>
+          <div class="form-group">
+            <label for="car-plate">Placa:</label>
+            <input type="text" id="car-plate" required />
+          </div>
+          <button type="submit">Cadastrar Carro</button>
+        </form>
+        <div id="create-car-result" class="result"></div>
+      </div>
+
+      <!-- Seção de Listar Carros -->
+      <div class="section">
+        <h2>Listar Carros</h2>
+        <button id="list-cars-btn">Buscar Carros</button>
+        <div id="cars-list-result" class="result">
+          <table id="cars-table" style="display: none">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Modelo</th>
+                <th>Placa</th>
+              </tr>
+            </thead>
+            <tbody id="cars-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Seção de Registrar Check-in -->
+      <div class="section">
+        <h2>Registrar Check-in</h2>
+        <form id="create-checkin-form">
+          <div class="form-group">
+            <label for="checkin-car-id">Carro:</label>
+            <select id="checkin-car-id" required>
+              <option value="">Selecione um veículo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="checkin-employee-id">ID do Funcionário:</label>
+            <input type="text" id="checkin-employee-id" required />
+          </div>
+          <div class="form-group">
+            <label for="checkin-description">Descrição:</label>
+            <input type="text" id="checkin-description" required />
+          </div>
+          <button type="submit">Registrar Check-in</button>
+        </form>
+        <div id="create-checkin-result" class="result"></div>
+      </div>
+
+      <!-- Seção de Listar Check-ins -->
+      <div class="section">
+        <h2>Listar Check-ins</h2>
+        <button id="list-checkins-btn">Buscar Check-ins</button>
+        <div id="checkins-list-result" class="result">
+          <table id="checkins-table" style="display: none">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Carro</th>
+                <th>Funcionário</th>
+                <th>Descrição</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody id="checkins-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Função para obter a URL base da API
+      function getBaseUrl() {
+        return document.getElementById('api-base-url').value.trim();
+      }
+
+      // Função para construir URL corretamente
+      function buildUrl(baseUrl, endpoint) {
+        // Remover barras no final da base e no início do endpoint
+        baseUrl = baseUrl.replace(/\/+$/, '');
+        endpoint = endpoint.replace(/^\/+/, '');
+
+        // Juntar com uma única barra
+        return `${baseUrl}/${endpoint}`;
+      }
+
+      // Função para salvar configuração no localStorage
+      document
+        .getElementById('save-config-btn')
+        .addEventListener('click', function () {
+          const baseUrl = getBaseUrl();
+          if (baseUrl) {
+            localStorage.setItem('api-base-url', baseUrl);
+            document.getElementById('config-status').innerHTML =
+              '<p class="success">Configuração salva com sucesso!</p>';
+          } else {
+            document.getElementById('config-status').innerHTML =
+              '<p class="error">Por favor, informe uma URL base válida.</p>';
+          }
+        });
+
+      // Carregar configuração salva no carregamento da página
+      window.addEventListener('load', function () {
+        const savedBaseUrl = localStorage.getItem('api-base-url');
+        if (savedBaseUrl) {
+          document.getElementById('api-base-url').value = savedBaseUrl;
+        }
+
+        const savedToken = localStorage.getItem('jwt-token');
+        if (savedToken) {
+          document.getElementById('jwt-token').value = savedToken;
+          document.getElementById('token-info').innerHTML =
+            '<p class="success">Token carregado do armazenamento local.</p>';
+        }
+      });
+
+      // Função para obter o token JWT
+      function getToken() {
+        return document.getElementById('jwt-token').value.trim();
+      }
+
+      // Função para salvar o token no localStorage
+      function saveToken(token) {
+        localStorage.setItem('jwt-token', token);
+      }
+
+      // Função para depurar requisições (debug)
+      function debugRequest(url, options) {
+        console.log('Requisição para:', url);
+        console.log('Opções:', options);
+      }
+
+      // Função para fazer requisições à API
+      async function apiRequest(
+        endpoint,
+        method = 'GET',
+        data = null,
+        needsAuth = true,
+      ) {
+        const baseUrl = getBaseUrl();
+        if (!baseUrl) {
+          throw new Error(
+            'URL base da API não configurada. Configure-a na seção "Configuração da API".',
+          );
+        }
+
+        // Construir URL corretamente
+        const url = buildUrl(baseUrl, endpoint);
+        const headers = {
+          'Content-Type': 'application/json',
+        };
+
+        const options = {
+          method,
+          headers,
+        };
+
+        if (data && (method === 'POST' || method === 'PUT')) {
+          options.body = JSON.stringify(data);
+        }
+
+        // Debug: mostrar a URL e configurações no console
+        debugRequest(url, options);
+
+        try {
+          const response = await fetch(url, options);
+          // Para depuração no console
+          console.log('Response status:', response.status);
+
+          const responseText = await response.text();
+          let responseData;
+
+          // Tentar analisar como JSON, mas manter como texto se falhar
+          try {
+            responseData = JSON.parse(responseText);
+          } catch (e) {
+            console.log('Resposta não é JSON válido:', responseText);
+            responseData = { message: responseText };
+          }
+
+          if (!response.ok) {
+            throw new Error(
+              responseData.message ||
+                `Erro ${response.status}: ${response.statusText}`,
+            );
+          }
+
+          return responseData;
+        } catch (error) {
+          if (
+            error.name === 'TypeError' &&
+            error.message.includes('Failed to fetch')
+          ) {
+            throw new Error(
+              `Não foi possível conectar à API em ${baseUrl}. Verifique se o servidor está rodando e se a URL está correta.`,
+            );
+          }
+          throw error;
+        }
+      }
+
+      // Função para exibir resultados
+      function showResult(elementId, data, isError = false) {
+        const element = document.getElementById(elementId);
+        if (isError) {
+          element.innerHTML = `<p class="error">Erro: ${data}</p>`;
+        } else {
+          element.innerHTML = `<p class="success">Sucesso!</p><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+      }
+
+      // Login
+      document
+        .getElementById('login-form')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+          try {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            const result = await apiRequest(
+              'sessao',
+              'POST',
+              { email, senha_hash: password },
+              false,
+            );
+
+            // Se o login for bem-sucedido, salva o token
+            if (result.token) {
+              document.getElementById('jwt-token').value = result.token;
+              saveToken(result.token);
+              document.getElementById('token-info').innerHTML =
+                '<p class="success">Token obtido com sucesso!</p>';
+            }
+
+            showResult('login-result', result);
+          } catch (error) {
+            showResult('login-result', error.message, true);
+          }
+        });
+
+      // Criar Usuário
+      document
+        .getElementById('create-user-form')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+          try {
+            const userData = {
+              nome: document.getElementById('user-name').value,
+              cpf: '000.000.000-00', // CPF fictício
+              telefone: '0000-0000', // Telefone fictício
+              usuario_id:
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY1Nzg1NjQxLTFiMDUtNDE1MC1hMTVhLTc4YWY5YmUzY2ZmZSIsImlhdCI6MTc0NTAxOTgyNSwiZXhwIjoxNzQ1NjI0NjI1fQ.BRqZU0RPfNmTFfrJ-e_dW-B4yw3Vb5o6Rm9TQNr1kUg', // ID do usuário fictício
+              email: document.getElementById('user-email').value,
+              senha_hash: document.getElementById('user-password').value,
+              papel: document.getElementById('user-role').value,
+            };
+
+            const result = await apiRequest(
+              'usuarios',
+              'POST',
+              userData,
+              false,
+            );
+            showResult('create-user-result', result);
+          } catch (error) {
+            showResult('create-user-result', error.message, true);
+          }
+        });
+
+      // Criar Funcionário
+      document
+        .getElementById('create-employee-form')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+          try {
+            const employeeData = {
+              nome: document.getElementById('employee-name').value,
+              cpf: document.getElementById('employee-cpf').value,
+              email: document.getElementById('employee-email').value,
+              telefone: document.getElementById('employee-phone').value,
+              usuario_id: parseInt(
+                document.getElementById('employee-user-id').value,
+              ),
+            };
+
+            const result = await apiRequest(
+              'funcionarios',
+              'POST',
+              employeeData,
+            );
+            showResult('create-employee-result', result);
+          } catch (error) {
+            showResult('create-employee-result', error.message, true);
+          }
+        });
+
+      // Listar Funcionários
+      document
+        .getElementById('list-employees-btn')
+        .addEventListener('click', async function () {
+          try {
+            const result = await apiRequest('funcionarios');
+
+            // Preencher a tabela
+            const tableBody = document.getElementById('employees-table-body');
+            tableBody.innerHTML = '';
+
+            result.forEach((employee) => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                        <td>${employee.id}</td>
+                        <td>${employee.nome}</td>
+                        <td>${employee.cpf}</td>
+                        <td>${employee.email}</td>
+                        <td>${employee.telefone}</td>
+                    `;
+              tableBody.appendChild(row);
+            });
+
+            document.getElementById('employees-table').style.display = 'table';
+            showResult('employees-list-result', result);
+          } catch (error) {
+            showResult('employees-list-result', error.message, true);
+            document.getElementById('employees-table').style.display = 'none';
+          }
+        });
+
+      // Cadastrar Carro
+      document
+        .getElementById('create-car-form')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+          try {
+            const carData = {
+              modelo: document.getElementById('car-model').value,
+              placa: document.getElementById('car-plate').value,
+            };
+
+            const result = await apiRequest('carros', 'POST', carData);
+            showResult('create-car-result', result);
+          } catch (error) {
+            showResult('create-car-result', error.message, true);
+          }
+        });
+
+      // Listar Carros
+      document
+        .getElementById('list-cars-btn')
+        .addEventListener('click', async function () {
+          try {
+            const result = await apiRequest('carros');
+
+            // Preencher a tabela
+            const tableBody = document.getElementById('cars-table-body');
+            tableBody.innerHTML = '';
+
+            result.forEach((car) => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                        <td>${car.id}</td>
+                        <td>${car.modelo}</td>
+                        <td>${car.placa}</td>
+                    `;
+              tableBody.appendChild(row);
+            });
+
+            document.getElementById('cars-table').style.display = 'table';
+            showResult('cars-list-result', result);
+          } catch (error) {
+            showResult('cars-list-result', error.message, true);
+            document.getElementById('cars-table').style.display = 'none';
+          }
+        });
+
+      // Registrar Check-in - Versão corrigida
+      document.addEventListener('DOMContentLoaded', function () {
+        // Função para preencher o select com os veículos do banco
+        async function populateCarSelect() {
+          const carSelect = document.getElementById('checkin-car-id');
+          try {
+            // Limpa o select e adiciona opção padrão
+            carSelect.innerHTML =
+              '<option value="" disabled selected>Carregando veículos...</option>';
+
+            // Busca os carros da API
+            const cars = await apiRequest('carros');
+
+            // Se chegou aqui, a requisição foi bem-sucedida
+            carSelect.innerHTML =
+              '<option value="">Selecione um veículo</option>';
+
+            if (cars && cars.length > 0) {
+              cars.forEach((car) => {
+                const option = document.createElement('option');
+                option.value = car.id;
+                option.textContent = `${car.modelo} (${car.placa})`;
+                carSelect.appendChild(option);
+              });
+            } else {
+              carSelect.innerHTML =
+                '<option value="">Nenhum veículo cadastrado</option>';
+            }
+          } catch (error) {
+            console.error('Erro ao carregar veículos:', error);
+            carSelect.innerHTML = `<option value="">Erro ao carregar veículos: ${error.message}</option>`;
+
+            // Mostra o erro no console para depuração
+            const errorMessage = `Falha ao carregar veículos: ${error.message}`;
+            showResult('create-checkin-result', errorMessage, true);
+          }
+        }
+
+        // Chama a função para carregar os veículos quando a página carrega
+        populateCarSelect();
+
+        // Evento de submit do formulário de check-in
+        document
+          .getElementById('create-checkin-form')
+          .addEventListener('submit', async function (e) {
+            e.preventDefault();
+            try {
+              const checkinData = {
+                carro_id: document.getElementById('checkin-car-id').value,
+                funcionario_id: document.getElementById('checkin-employee-id')
+                  .value,
+                descricao: document.getElementById('checkin-description').value,
+              };
+
+              // Validação básica
+              if (!checkinData.carro_id) {
+                throw new Error('Selecione um veículo');
+              }
+              if (!checkinData.funcionario_id) {
+                throw new Error('Informe o ID do funcionário');
+              }
+
+              const result = await apiRequest('checkins', 'POST', checkinData);
+              showResult('create-checkin-result', result);
+
+              // Recarrega a lista de veículos após cadastrar um check-in
+              populateCarSelect();
+            } catch (error) {
+              showResult('create-checkin-result', error.message, true);
+            }
+          });
+      });
+
+      // Listar Check-ins
+      document
+        .getElementById('list-checkins-btn')
+        .addEventListener('click', async function () {
+          try {
+            const result = await apiRequest('checkins');
+
+            // Preencher a tabela
+            const tableBody = document.getElementById('checkins-table-body');
+            tableBody.innerHTML = '';
+
+            result.forEach((checkin) => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                        <td>${checkin.id}</td>
+                        <td>${checkin.carro?.modelo || 'N/A'} (${checkin.carro?.placa || 'N/A'})</td>
+                        <td>${checkin.funcionario?.nome || 'N/A'}</td>
+                        <td>${checkin.descricao}</td>
+                        <td>${new Date(checkin.createdAt).toLocaleString()}</td>
+                    `;
+              tableBody.appendChild(row);
+            });
+
+            document.getElementById('checkins-table').style.display = 'table';
+            showResult('checkins-list-result', result);
+          } catch (error) {
+            showResult('checkins-list-result', error.message, true);
+            document.getElementById('checkins-table').style.display = 'none';
+          }
+        });
+    </script>
+  </body>
+</html>

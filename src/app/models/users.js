@@ -21,7 +21,6 @@ class User extends Model {
           type: Sequelize.ENUM('admin', 'usuario'),
           defaultValue: 'usuario',
         },
-        
       },
       {
         sequelize,

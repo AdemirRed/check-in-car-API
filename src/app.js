@@ -1,3 +1,4 @@
+import cors from 'cors'; // Adicione esta linha
 import express from 'express';
 import './database';
 import routes from './routes';
@@ -11,6 +12,7 @@ class App {
 
   // Middleware
   middleware() {
+    this.app.use(cors()); // Adicione esta linha para habilitar CORS
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }

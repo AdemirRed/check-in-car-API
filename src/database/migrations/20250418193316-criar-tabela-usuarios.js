@@ -11,16 +11,16 @@ module.exports = {
       },
       nome: {
         type: Sequelize.STRING,
-        allowNull: false,  // Nome não pode ser nulo
+        allowNull: false, // Nome não pode ser nulo
       },
       email: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false,  // Email não pode ser nulo
+        allowNull: false, // Email não pode ser nulo
       },
       senha_hash: {
         type: Sequelize.STRING,
-        allowNull: false,  // Senha não pode ser nula
+        allowNull: false, // Senha não pode ser nula
       },
       papel: {
         type: Sequelize.ENUM('admin', 'usuario'),

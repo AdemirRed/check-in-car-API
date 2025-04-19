@@ -25,7 +25,7 @@ module.exports = {
           model: 'registros_uso',
           key: 'id',
         },
-        allowNull: true,  // Pode ser nulo, caso não haja registro de uso
+        allowNull: true, // Pode ser nulo, caso não haja registro de uso
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
@@ -35,7 +35,7 @@ module.exports = {
           model: 'funcionarios',
           key: 'id',
         },
-        allowNull: true,  // Pode ser nulo, caso não haja responsável identificado
+        allowNull: true, // Pode ser nulo, caso não haja responsável identificado
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },

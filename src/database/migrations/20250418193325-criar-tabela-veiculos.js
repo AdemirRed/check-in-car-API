@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.createTable('veiculos', {
       id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUIDV4, // Garante que o UUID seja gerado automaticamente
         primaryKey: true,
         allowNull: false,
       },
@@ -16,17 +16,17 @@ module.exports = {
       },
       marca: {
         type: Sequelize.STRING,
-        allowNull: false, // Marca do veículo também obrigatória
+        allowNull: true, // Marca do veículo também obrigatória
       },
       modelo: {
         type: Sequelize.STRING,
-        allowNull: true, // Modelo do veículo 
+        allowNull: true, // Modelo do veículo
       },
       cor: Sequelize.STRING,
       renavam: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: true, // RENAVAM 
+        allowNull: true, // RENAVAM
       },
       status: {
         type: Sequelize.ENUM('ativo', 'inativo', 'em manutenção'),
