@@ -34,7 +34,9 @@ function decryptCPF(encryptedCpf) {
 // Schema de validação de funcionário
 const funcionarioSchema = Yup.object().shape({
   nome: Yup.string().required('O nome é obrigatório'),
-  email: Yup.string().email('O e-mail deve ser válido').required('O e-mail é obrigatório'),
+  email: Yup.string()
+    .email('O e-mail deve ser válido')
+    .required('O e-mail é obrigatório'),
   usuario_id: Yup.string().required('O ID do usuário é obrigatório'),
   telefone: Yup.string().notRequired(),
   cpf: Yup.string().length(11, 'O CPF deve ter 11 caracteres').notRequired(),
@@ -50,7 +52,9 @@ class FuncionarioController {
 
       const usuario = await User.findByPk(usuario_id);
       if (!usuario) {
-        return res.status(404).json({ erro: 'Usuário (usuario_id) não encontrado.' });
+        return res
+          .status(404)
+          .json({ erro: 'Usuário (usuario_id) não encontrado.' });
       }
 
       const cpfCriptografado = cpf ? encryptCPF(cpf) : null;
@@ -62,7 +66,9 @@ class FuncionarioController {
       });
 
       if (existe) {
-        return res.status(409).json({ erro: 'Já existe funcionário com mesmo CPF ou e‑mail.' });
+        return res
+          .status(409)
+          .json({ erro: 'Já existe funcionário com mesmo CPF ou e‑mail.' });
       }
 
       const funcionario = await Funcionario.create({
@@ -85,7 +91,9 @@ class FuncionarioController {
       if (error instanceof Yup.ValidationError) {
         return res.status(400).json({ erros: error.errors });
       }
-      return res.status(500).json({ erro: `Erro ao cadastrar funcionário: ${error.message}` });
+      return res
+        .status(500)
+        .json({ erro: `Erro ao cadastrar funcionário: ${error.message}` });
     }
   }
 
@@ -97,7 +105,9 @@ class FuncionarioController {
       });
 
       if (funcionarios.length === 0) {
-        return res.status(200).json({ mensagem: 'Nenhum funcionário cadastrado.' });
+        return res
+          .status(200)
+          .json({ mensagem: 'Nenhum funcionário cadastrado.' });
       }
 
       const resultado = funcionarios.map((func) => {

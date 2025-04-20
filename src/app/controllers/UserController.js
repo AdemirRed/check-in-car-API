@@ -6,7 +6,9 @@ import User from '../models/users';
 // Schema de validação definido diretamente no controller
 const userSchema = Yup.object().shape({
   nome: Yup.string().required('O nome é obrigatório'),
-  email: Yup.string().email('E-mail inválido').required('O e-mail é obrigatório'),
+  email: Yup.string()
+    .email('E-mail inválido')
+    .required('O e-mail é obrigatório'),
   senha_hash: Yup.string()
     .required('A senha é obrigatória')
     .min(6, 'A senha deve ter no mínimo 6 caracteres'),
@@ -25,7 +27,9 @@ class UserController {
 
       const usuarioExiste = await User.findOne({ where: { email } });
       if (usuarioExiste) {
-        return res.status(400).json({ erro: 'Já existe um usuário cadastrado com este e-mail.' });
+        return res
+          .status(409)
+          .json({ erro: 'Já existe um usuário cadastrado com este e-mail.' });
       }
 
       const senhaCriptografada = await bcrypt.hash(senha_hash, 8);
@@ -38,7 +42,9 @@ class UserController {
         papel: papel === 'admin' ? 'admin' : 'usuario',
       });
 
-      return res.status(201).json({ id: usuario.id, nome: usuario.nome, email: usuario.email });
+      return res
+        .status(201)
+        .json({ id: usuario.id, nome: usuario.nome, email: usuario.email });
     } catch (error) {
       if (error.name === 'ValidationError') {
         // Retorna todas as mensagens de validação
@@ -46,13 +52,17 @@ class UserController {
       }
 
       console.error('Erro ao criar usuário:', error);
-      return res.status(500).json({ erro: `Erro ao criar usuário: ${error.message}` });
+      return res
+        .status(500)
+        .json({ erro: `Erro ao criar usuário: ${error.message}` });
     }
   }
 
   async index(req, res) {
     try {
-      const usuarios = await User.findAll({ attributes: ['id', 'nome', 'email'] });
+      const usuarios = await User.findAll({
+        attributes: ['id', 'nome', 'email'],
+      });
       return res.json(usuarios);
     } catch (error) {
       console.error('Erro ao buscar usuários:', error);

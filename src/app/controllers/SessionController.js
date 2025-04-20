@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import * as Yup from 'yup';
 import authConfig from '../../config/auth';
 import User from '../models/users';
+import * as Yup from 'yup';
 
 // Schema de validação de login
 const loginSchema = Yup.object().shape({
@@ -23,7 +23,7 @@ class SessionController {
       if (error.name === 'ValidationError') {
         // Verifica se há erro de mínimo de caracteres na senha
         const minError = error.inner.find(
-          (err) => err.path === 'senha_hash' && err.type === 'min'
+          (err) => err.path === 'senha_hash' && err.type === 'min',
         );
         if (minError) {
           return res.status(400).json({ erro: minError.message });

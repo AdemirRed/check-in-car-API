@@ -21,7 +21,7 @@ class Veiculo extends Model {
         status: {
           type: Sequelize.ENUM('ativo', 'inativo', 'em manutenção'), // Adicionado 'disponível'
           defaultValue: 'ativo', // Define um status padrão
-        }
+        },
       },
       {
         sequelize,

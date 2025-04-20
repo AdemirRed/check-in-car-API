@@ -13,7 +13,7 @@ class User extends Model {
         nome: Sequelize.STRING,
         email: {
           type: Sequelize.STRING,
-          unique: true, // Garantir que o email seja único
+          unique: true,
           allowNull: false,
         },
         senha_hash: Sequelize.STRING,
@@ -21,17 +21,20 @@ class User extends Model {
           type: Sequelize.ENUM('admin', 'usuario'),
           defaultValue: 'usuario',
         },
+        codigo_recuperacao: {
+          type: Sequelize.STRING,
+          allowNull: true,
+        },
       },
       {
         sequelize,
-        tableName: 'usuarios', // Definir o nome da tabela explicitamente
-        timestamps: true, // Desabilitar timestamps automáticos, pois você tem campos personalizados
+        tableName: 'usuarios',
+        timestamps: true,
       },
     );
   }
 
   static associate(models) {
-    // Associar User a Funcionario, com a chave estrangeira 'usuario_id' na tabela Funcionario
     this.hasMany(models.Funcionario, { foreignKey: 'usuario_id' });
   }
 }

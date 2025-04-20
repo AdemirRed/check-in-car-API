@@ -43,7 +43,15 @@ class veiculosController {
   async index(req, res) {
     try {
       const veiculosList = await veiculos.findAll({
-        attributes: ['id', 'placa', 'modelo', 'marca', 'status', 'created_at', 'updated_at'], // Especifique os campos desejados
+        attributes: [
+          'id',
+          'placa',
+          'modelo',
+          'marca',
+          'status',
+          'created_at',
+          'updated_at',
+        ], // Especifique os campos desejados
       });
 
       if (veiculosList.length === 0) {

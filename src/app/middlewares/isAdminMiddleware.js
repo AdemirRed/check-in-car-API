@@ -14,11 +14,9 @@ const isAdmin = async (req, res, next) => {
     const user = await User.findByPk(userId);
 
     if (!user || user.papel !== 'admin') {
-      return res
-        .status(403)
-        .json({
-          erro: 'Acesso negado: você não tem permissões de administrador.',
-        });
+      return res.status(403).json({
+        erro: 'Acesso negado: você não tem permissões de administrador.',
+      });
     }
 
     next();
