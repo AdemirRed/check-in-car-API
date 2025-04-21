@@ -20,6 +20,7 @@ export default async (req, res, next) => {
       id: decoded.id,
       usuario_id: decoded.usuario_id, // Certifique-se de que o token contém `usuario_id`
       papel: decoded.papel, // Adiciona o papel do usuário (admin ou usuário)
+      nome: decoded.nome, // Adiciona o nome do usuário
     };
 
     return next();

@@ -87,6 +87,27 @@ class UserController {
       return res.status(500).json({ erro: 'Erro ao buscar usuário.' });
     }
   }
+
+  async verifyEmail(req, res) {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({ erro: 'O e-mail é obrigatório.' });
+      }
+
+      const usuario = await User.findOne({ where: { email } });
+
+      if (!usuario) {
+        return res.status(404).json({ mensagem: 'E-mail não encontrado.' });
+      }
+
+      return res.status(200).json({ mensagem: 'E-mail encontrado.' });
+    } catch (error) {
+      console.error('Erro ao verificar e-mail:', error);
+      return res.status(500).json({ erro: 'Erro ao verificar e-mail.' });
+    }
+  }
 }
 
 export default new UserController();

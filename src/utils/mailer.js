@@ -17,9 +17,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendEmail({ to, subject, text, html }) {
   try {
-    console.log('📤 Tentando enviar e-mail com os seguintes dados:');
-    console.log({ to, subject, text, html });
-
+    
     const info = await transporter.sendMail({
       from: `"Recuperação de Senha" <${process.env.EMAIL_USER}>`,
       to,
@@ -28,7 +26,6 @@ async function sendEmail({ to, subject, text, html }) {
       html,
     });
 
-    console.log('📬 E-mail enviado com sucesso para:', to);
     console.log('📨 Info:', info);
   } catch (error) {
     console.error('❌ Erro ao enviar e-mail:', error);

@@ -2,7 +2,6 @@ import { Router } from 'express';
 
 import CarroController from './app/controllers/CarroController';
 import CheckInController from './app/controllers/CheckInController';
-import FuncionarioController from './app/controllers/FuncionarioController';
 import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
 
@@ -22,6 +21,7 @@ routes.get('/carros', CarroController.index); // Lista todos os carros
 
 routes.post('/esqueci-senha', AuthController.forgotPassword);
 routes.post('/redefinir-senha', AuthController.resetPassword);
+routes.post('/verificar-email', UserController.verifyEmail); // Verifica se o e-mail existe no banco
 // Aplicar middleware para proteger todas as rotas abaixo:
 routes.use(authMiddleware);
 
@@ -33,9 +33,7 @@ routes.get('/checkins', CheckInController.index); // Lista todos os check-ins
 routes.get('/usuarios', isAdmin, UserController.index); // Lista todos os usuários
 routes.get('/usuarios/:id',  UserController.show); // Mostra um usuário específico
 
-// Rotas que precisam de verificação de administrador
-routes.post('/funcionarios', isAdmin, FuncionarioController.store); // Cadastra um novo funcionário
-routes.get('/funcionarios', isAdmin, FuncionarioController.index); // Lista todos os funcionários
+
 
 routes.post('/carros', isAdmin, CarroController.store); // Cadastra um novo carro
 

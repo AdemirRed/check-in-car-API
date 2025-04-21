@@ -16,11 +16,12 @@ class App {
 
     this.app.use(cors({
       origin: function (origin, callback) {
-        // Permite qualquer origem, mas respeitando o uso de credentials
-        if (origin) {
-          callback(null, origin); // Retorna a origem da requisição
+        // Permite qualquer origem ou origens específicas
+        const allowedOrigins = ['http://localhost:3001', 'http://redblackspy.ddns.net:3002']; // Substitua pelas origens permitidas
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true); // Permite a origem
         } else {
-          callback(new Error('Not allowed by CORS'));
+          callback(new Error('Not allowed by CORS')); // Bloqueia a origem
         }
       },
       credentials: true, // Permite envio de cookies e headers Authorization

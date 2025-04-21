@@ -52,7 +52,7 @@ class SessionController {
 
       // Criação do token JWT
       const token = jwt.sign(
-        { id, papel, usuario_id: id },
+        { id, papel, usuario_id: id, nome },
         authConfig.secret,
         { expiresIn: authConfig.expiresIn }
       );

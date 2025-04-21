@@ -9,13 +9,13 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      funcionario_id: {
+      usuario_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'funcionarios',
+          model: 'usuarios',
           key: 'id',
         },
-        allowNull: false, // O funcionário é obrigatório
+        allowNull: false, // O usuário é obrigatório
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
@@ -31,7 +31,7 @@ module.exports = {
       },
       finalidade: {
         type: Sequelize.STRING,
-        allowNull: true, // A finalidade pode deve ser obrigatória
+        allowNull: true, // A finalidade pode ser opcional
       },
       destino: Sequelize.STRING,
       data_hora_saida: {
@@ -45,11 +45,13 @@ module.exports = {
       observacoes: Sequelize.TEXT,
       created_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
+        allowNull: false,
+        defaultValue: Sequelize.fn('NOW'), // Usar Sequelize.fn para compatibilidade com PostgreSQL
       },
       updated_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
+        allowNull: false,
+        defaultValue: Sequelize.fn('NOW'), // Usar Sequelize.fn para compatibilidade com PostgreSQL
       },
     });
   },

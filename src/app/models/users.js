@@ -35,7 +35,8 @@ class User extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Funcionario, { foreignKey: 'usuario_id' });
+    // Relacionamento com registros de uso
+    this.hasMany(models.RegistroUso, { foreignKey: 'usuario_id', as: 'registrosUso' });
   }
 }
 

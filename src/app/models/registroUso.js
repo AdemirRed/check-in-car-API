@@ -1,4 +1,4 @@
-import Sequelize, { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid'; // Importação do uuidv4 para gerar UUIDs
 
 class RegistroUso extends Model {
@@ -10,8 +10,8 @@ class RegistroUso extends Model {
           defaultValue: uuidv4, // Gera automaticamente um UUID
           primaryKey: true,
         },
-        funcionario_id: {
-          type: DataTypes.UUID, // Usando DataTypes.UUID
+        usuario_id: {
+          type: DataTypes.UUID, // Substituindo funcionario_id por usuario_id
           allowNull: false,
         },
         veiculo_id: {
@@ -23,14 +23,6 @@ class RegistroUso extends Model {
         data_hora_saida: DataTypes.DATE,  // Usando DataTypes.DATE
         data_hora_retorno: DataTypes.DATE, // Usando DataTypes.DATE
         observacoes: DataTypes.TEXT, // Usando DataTypes.TEXT
-        created_at: {
-          type: DataTypes.DATE,
-          defaultValue: Sequelize.NOW,
-        },
-        updated_at: {
-          type: DataTypes.DATE,
-          defaultValue: Sequelize.NOW,
-        },
       },
       {
         sequelize,
@@ -41,8 +33,8 @@ class RegistroUso extends Model {
   }
 
   static associate(models) {
-    // Relacionamento com o funcionário
-    this.belongsTo(models.Funcionario, { foreignKey: 'funcionario_id' });
+    // Relacionamento com o usuário
+    this.belongsTo(models.User, { foreignKey: 'usuario_id', as: 'usuario' });
 
     // Relacionamento com o veículo
     this.belongsTo(models.Veiculo, { foreignKey: 'veiculo_id' });

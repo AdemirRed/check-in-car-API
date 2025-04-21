@@ -29,10 +29,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      funcionario_responsavel_id: {
+      usuario_responsavel_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'funcionarios',
+          model: 'usuarios', // Alterado de 'funcionarios' para 'usuarios'
           key: 'id',
         },
         allowNull: true, // Pode ser nulo, caso não haja responsável identificado
@@ -51,11 +51,13 @@ module.exports = {
       paga: Sequelize.BOOLEAN,
       created_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
+        allowNull: false,
+        defaultValue: Sequelize.fn('NOW'), // Usar Sequelize.fn para compatibilidade com PostgreSQL
       },
       updated_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
+        allowNull: false,
+        defaultValue: Sequelize.fn('NOW'), // Usar Sequelize.fn para compatibilidade com PostgreSQL
       },
     });
   },

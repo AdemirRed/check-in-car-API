@@ -1,12 +1,11 @@
 import { Sequelize } from 'sequelize';
-import Funcionario from '../app/models/funcionario.js'; // ✅ novo import
-import multa from '../app/models/multa'; // ✅ novo import
+import multa from '../app/models/multa';
 import RegistroUso from '../app/models/registroUso';
 import User from '../app/models/users';
 import Veiculo from '../app/models/veiculo';
 import configDatabase from '../config/database';
 
-const models = [User, Funcionario, Veiculo, RegistroUso, multa]; // ✅ adicionado Funcionario
+const models = [User, Veiculo, RegistroUso, multa];
 
 class Database {
   constructor() {

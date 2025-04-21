@@ -1,10 +1,10 @@
 import * as Yup from 'yup';
-import Funcionario from '../models/funcionario';
 import CheckIn from '../models/registroUso';
+import User from '../models/users';
 
 const checkinSchema = Yup.object().shape({
   veiculo_id: Yup.string().required('O campo veiculo é obrigatório.'),
-  funcionario_id: Yup.string().notRequired(), // não usado aqui diretamente
+  usuario_id: Yup.string().notRequired(), // não usado aqui diretamente
   destino: Yup.string().notRequired(),
   finalidade: Yup.string().notRequired(),
   observacoes: Yup.string().notRequired(),
@@ -32,23 +32,20 @@ class CheckInController {
         return res.status(401).json({ erro: 'Usuário não autenticado.' });
       }
 
-      // Verifica se existe um funcionário vinculado ao usuário
-      const funcionario = await Funcionario.findOne({
-        where: { usuario_id: usuarioId },
-      });
-      
-      if (!funcionario) {
-        console.warn(`⚠️ Nenhum funcionário encontrado para o usuário com ID: ${usuarioId}`);
+      // Verifica se o usuário existe
+      const usuario = await User.findByPk(usuarioId);
+      if (!usuario) {
+        console.warn(`⚠️ Nenhum usuário encontrado com ID: ${usuarioId}`);
         return res.status(404).json({
-          erro: 'Funcionário não encontrado para este usuário.',
+          erro: 'Usuário não encontrado.',
         });
       }
 
-      console.log('✅ Funcionário localizado:', funcionario.id);
+      console.log('✅ Usuário localizado:', usuario.id);
 
       // Cria o check-in
       const checkIn = await CheckIn.create({
-        funcionario_id: funcionario.id,
+        usuario_id: usuario.id,
         veiculo_id,
         destino,
         finalidade,

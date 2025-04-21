@@ -1,33 +1,30 @@
-import Sequelize, { Model } from 'sequelize';
+import Sequelize, { DataTypes, Model } from 'sequelize';
 
 class Multa extends Model {
   static init(sequelize) {
     super.init(
       {
+        id: {
+          type: DataTypes.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          primaryKey: true,
+        },
         veiculo_id: {
-          type: Sequelize.UUID,
+          type: DataTypes.UUID,
           allowNull: false,
         },
         registro_uso_id: {
-          type: Sequelize.UUID,
+          type: DataTypes.UUID,
           allowNull: true, // Pode ser null se não estiver associado a um registro de uso específico
         },
-        funcionario_responsavel_id: {
-          type: Sequelize.UUID,
+        usuario_responsavel_id: {
+          type: DataTypes.UUID,
           allowNull: true, // Pode ser null se o funcionário responsável não for identificado
         },
-        data_multa: Sequelize.DATE,
-        descricao: Sequelize.STRING,
-        valor: Sequelize.DECIMAL,
-        paga: Sequelize.BOOLEAN,
-        created_at: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
-        updated_at: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.NOW,
-        },
+        data_multa: DataTypes.DATE,
+        descricao: DataTypes.STRING,
+        valor: DataTypes.FLOAT,
+        paga: DataTypes.BOOLEAN,
       },
       {
         sequelize,
@@ -42,11 +39,12 @@ class Multa extends Model {
     this.belongsTo(models.Veiculo, { foreignKey: 'veiculo_id' });
 
     // Relacionamento com o registro de uso
-    this.belongsTo(models.RegistroUso, { foreignKey: 'registro_uso_id' });
+    this.belongsTo(models.RegistroUso, { foreignKey: 'registro_uso_id', as: 'registroUso' });
 
-    // Relacionamento com o funcionário responsável
-    this.belongsTo(models.Funcionario, {
-      foreignKey: 'funcionario_responsavel_id',
+    // Relacionamento com o usuário responsável
+    this.belongsTo(models.User, {
+      foreignKey: 'usuario_responsavel_id', // Atualizado para refletir a mudança
+      as: 'usuarioResponsavel',
     });
   }
 }
