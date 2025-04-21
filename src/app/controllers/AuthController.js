@@ -4,6 +4,9 @@ import 'dotenv/config';
 import sendEmail from '../../utils/mailer.js';
 import User from '../models/users.js';
 
+const RECOVERY_LIMIT_TIME = 15 * 60 * 1000; // 15 minutos
+const RECOVERY_ATTEMPT_LIMIT = 3;
+
 class AuthController {
   async forgotPassword(req, res) {
     try {
@@ -18,6 +21,27 @@ class AuthController {
           mensagem: 'Se o e‑mail estiver cadastrado, um código foi enviado.',
         });
       }
+
+      const now = new Date();
+      const lastAttempt = user.ultima_tentativa_recuperacao || 0;
+      const attemptCount = user.tentativas_recuperacao || 0;
+
+      // Verifica se o limite de tentativas foi excedido
+      if (attemptCount >= RECOVERY_ATTEMPT_LIMIT && now - lastAttempt < RECOVERY_LIMIT_TIME) {
+        return res.status(429).json({
+          erro: 'Muitas tentativas de recuperação. Tente novamente mais tarde.',
+        });
+      }
+
+      // Reseta o contador se o tempo limite passou
+      if (now - lastAttempt >= RECOVERY_LIMIT_TIME) {
+        user.tentativas_recuperacao = 0;
+      }
+
+      // Atualiza as tentativas e o timestamp
+      user.tentativas_recuperacao = (user.tentativas_recuperacao || 0) + 1;
+      user.ultima_tentativa_recuperacao = now;
+      await user.save();
 
       const codigo = crypto.randomInt(100000, 999999).toString();
       user.codigo_recuperacao = codigo;

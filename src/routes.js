@@ -19,7 +19,6 @@ routes.post('/sessao', SessionController.store); // Cria uma sessão de login pa
 routes.post('/usuarios', UserController.store); // Cria um novo usuário
 
 routes.get('/carros', CarroController.index); // Lista todos os carros
-routes.get('/checkins', CheckInController.index); // Lista todos os check-ins
 
 routes.post('/esqueci-senha', AuthController.forgotPassword);
 routes.post('/redefinir-senha', AuthController.resetPassword);
@@ -27,7 +26,12 @@ routes.post('/redefinir-senha', AuthController.resetPassword);
 routes.use(authMiddleware);
 
 // Rotas protegidas
+routes.post('/checkins', CheckInController.store); // Registra um novo check-in
+routes.get('/checkins', CheckInController.index); // Lista todos os check-ins
+
+// Rotas protegidas
 routes.get('/usuarios', isAdmin, UserController.index); // Lista todos os usuários
+routes.get('/usuarios/:id',  UserController.show); // Mostra um usuário específico
 
 // Rotas que precisam de verificação de administrador
 routes.post('/funcionarios', isAdmin, FuncionarioController.store); // Cadastra um novo funcionário
@@ -35,6 +39,5 @@ routes.get('/funcionarios', isAdmin, FuncionarioController.index); // Lista todo
 
 routes.post('/carros', isAdmin, CarroController.store); // Cadastra um novo carro
 
-routes.post('/checkins', CheckInController.store); // Registra um novo check-in
 
 export default routes;

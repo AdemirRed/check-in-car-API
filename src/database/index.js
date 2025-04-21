@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-
 import Funcionario from '../app/models/funcionario.js'; // ✅ novo import
 import multa from '../app/models/multa'; // ✅ novo import
 import RegistroUso from '../app/models/registroUso';

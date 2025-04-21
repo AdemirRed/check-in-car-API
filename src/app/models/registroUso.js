@@ -1,28 +1,34 @@
-import Sequelize, { Model } from 'sequelize';
+import Sequelize, { DataTypes, Model } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid'; // Importação do uuidv4 para gerar UUIDs
 
 class RegistroUso extends Model {
   static init(sequelize) {
     super.init(
       {
+        id: {
+          type: DataTypes.UUID, // Define o tipo como UUID
+          defaultValue: uuidv4, // Gera automaticamente um UUID
+          primaryKey: true,
+        },
         funcionario_id: {
-          type: Sequelize.UUID,
+          type: DataTypes.UUID, // Usando DataTypes.UUID
           allowNull: false,
         },
         veiculo_id: {
-          type: Sequelize.UUID,
+          type: DataTypes.UUID, // Usando DataTypes.UUID
           allowNull: false,
         },
-        finalidade: Sequelize.STRING,
-        destino: Sequelize.STRING,
-        data_hora_saida: Sequelize.DATE,
-        data_hora_retorno: Sequelize.DATE,
-        observacoes: Sequelize.TEXT,
+        finalidade: DataTypes.STRING,  // Usando DataTypes.STRING
+        destino: DataTypes.STRING,    // Usando DataTypes.STRING
+        data_hora_saida: DataTypes.DATE,  // Usando DataTypes.DATE
+        data_hora_retorno: DataTypes.DATE, // Usando DataTypes.DATE
+        observacoes: DataTypes.TEXT, // Usando DataTypes.TEXT
         created_at: {
-          type: Sequelize.DATE,
+          type: DataTypes.DATE,
           defaultValue: Sequelize.NOW,
         },
         updated_at: {
-          type: Sequelize.DATE,
+          type: DataTypes.DATE,
           defaultValue: Sequelize.NOW,
         },
       },

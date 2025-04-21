@@ -2,7 +2,7 @@ import 'dotenv/config'; // ✅ Isso já importa e configura seu .env com ESModul
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  host: 'out.dnsexit.com',
+  host: 'smtp.gmail.com',
   port: 587,
   secure: false,
   auth: {

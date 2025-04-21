@@ -40,7 +40,7 @@ module.exports = {
       },
       data_hora_retorno: {
         type: Sequelize.DATE,
-        allowNull: true, // A data e hora de retorno também devem ser obrigatórias
+        allowNull: true, // A data e hora de retorno não é obrigatória
       },
       observacoes: Sequelize.TEXT,
       created_at: {

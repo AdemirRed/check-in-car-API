@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 
 async function testarSMTP() {
   const transporter = nodemailer.createTransport({
-    host: 'out.dnsexit.com',
+    host: 'smtp.gmail.com',
     port: 587,
     secure: false, // STARTTLS
     auth: {

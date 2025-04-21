@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import * as Yup from 'yup';
 import authConfig from '../../config/auth';
 import User from '../models/users';
-import * as Yup from 'yup';
 
 // Schema de validação de login
 const loginSchema = Yup.object().shape({
@@ -30,27 +30,34 @@ class SessionController {
         }
       }
       // Mensagem genérica para falha de autenticação
-      return res.status(401).json({ erro: 'Usuário ou senha incorretos' });
+      return res.status(400).json({ erro: 'Usuário ou senha incorretos' });
     }
 
     const { email, senha_hash } = req.body;
 
     try {
       const user = await User.findOne({ where: { email } });
+
       if (!user) {
         return res.status(401).json({ erro: 'Usuário ou senha incorretos' });
       }
 
       const senhaValida = await bcrypt.compare(senha_hash, user.senha_hash);
+
       if (!senhaValida) {
         return res.status(401).json({ erro: 'Usuário ou senha incorretos' });
       }
 
       const { id, nome, papel } = user;
-      const token = jwt.sign({ id }, authConfig.secret, {
-        expiresIn: authConfig.expiresIn,
-      });
 
+      // Criação do token JWT
+      const token = jwt.sign(
+        { id, papel, usuario_id: id },
+        authConfig.secret,
+        { expiresIn: authConfig.expiresIn }
+      );
+
+      // Retorno com as informações do usuário e o token
       return res.json({
         usuario: { id, nome, email, papel },
         token,

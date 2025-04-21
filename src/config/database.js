@@ -1,8 +1,8 @@
-const port = process.env.PORT_SERVER || 3010;
+const port = process.env.PORT_BANCO || 3010;
 
 module.exports = {
   dialect: 'postgres',
-  host: 'localhost',
+  host: 'redblackspy.ddns.net',
   port: port,
   username: 'check-in-car',
   password: 'postgres',
