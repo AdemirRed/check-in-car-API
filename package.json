@@ -1,7 +1,7 @@
 {
-  "name": "check-in-car-api",
+  "name": " ",
   "version": "1.0.0",
-  "description": "API para gerenciamento de acesso de veículos",
+  "description": "API para ",
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

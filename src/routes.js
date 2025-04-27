@@ -33,9 +33,12 @@ routes.get('/checkins', CheckInController.index); // Lista todos os check-ins
 routes.get('/usuarios', isAdmin, UserController.index); // Lista todos os usuários
 routes.get('/usuarios/:id',  UserController.show); // Mostra um usuário específico
 
+// Rota protegida para buscar um veículo específico pelo ID
+routes.get('/carros/:id', authMiddleware, CarroController.show);
 
+// Rota protegida para atualizar o status de um veículo (acesso para usuários autenticados)
+routes.patch('/carros/:id', authMiddleware, CarroController.updateStatus);
 
 routes.post('/carros', isAdmin, CarroController.store); // Cadastra um novo carro
-
 
 export default routes;

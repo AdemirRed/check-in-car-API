@@ -1,9 +1,17 @@
 require('dotenv').config(); // Carrega variáveis do .env
 import { WebSocketServer } from 'ws'; // Importa WebSocketServer
 import app from './app.js'; // Importa a aplicação
+import cors from 'cors';
 
 const port = process.env.PORT || 3001;
 const host = process.env.HOST || '0.0.0.0'; // Fallback para qualquer interface
+
+// Configuração do CORS
+app.use(cors({
+  origin: '*', // Permite qualquer origem
+  methods: ['GET', 'POST', 'PATCH'], // Permite apenas os métodos necessários, incluindo PATCH
+  allowedHeaders: ['Content-Type', 'Authorization'], // Permite os cabeçalhos necessários
+}));
 
 const wsPort = process.env.PORT_SERVER || 3002; // Usa a porta do .env ou fallback para 3002
 

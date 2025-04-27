@@ -37,7 +37,7 @@ class RegistroUso extends Model {
     this.belongsTo(models.User, { foreignKey: 'usuario_id', as: 'usuario' });
 
     // Relacionamento com o veículo
-    this.belongsTo(models.Veiculo, { foreignKey: 'veiculo_id' });
+    this.belongsTo(models.Veiculo, { foreignKey: 'veiculo_id', as: 'veiculo' });
 
     // Relacionamento com as multas
     this.hasMany(models.Multa, { foreignKey: 'registro_uso_id' });

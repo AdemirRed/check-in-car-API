@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import CheckIn from '../models/registroUso';
 import User from '../models/users';
+import Veiculo from '../models/veiculo'; // Importa o modelo de veículo
 
 const checkinSchema = Yup.object().shape({
   veiculo_id: Yup.string().required('O campo veiculo é obrigatório.'),
@@ -79,7 +80,24 @@ class CheckInController {
       await querySchema.validate(req.query, { abortEarly: false });
 
       console.log('🔍 Buscando todos os check-ins...');
-      const checkins = await CheckIn.findAll();
+      const checkins = await CheckIn.findAll({
+        include: [
+          {
+            model: Veiculo,
+            as: 'veiculo',
+            attributes: ['modelo'], // Substitui 'nome' por 'modelo'
+          },
+        ],
+        attributes: [
+          'usuario_id', // Adicionado para incluir o ID do usuário
+          'destino',
+          'finalidade',
+          'observacoes',
+          'data_hora_saida',
+          'data_hora_retorno',
+        ],
+      });
+
       return res.json(checkins);
     } catch (error) {
       if (error instanceof Yup.ValidationError) {

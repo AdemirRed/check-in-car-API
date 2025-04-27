@@ -15,7 +15,7 @@ class Veiculo extends Model {
           allowNull: false,
         },
         marca: Sequelize.STRING,
-        modelo: Sequelize.STRING,
+        modelo: Sequelize.STRING, // Certifique-se de que esta coluna existe
         cor: Sequelize.STRING,
         renavam: Sequelize.STRING,
         status: {

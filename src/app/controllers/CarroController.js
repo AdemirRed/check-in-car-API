@@ -48,6 +48,7 @@ class veiculosController {
           'placa',
           'modelo',
           'marca',
+          'cor',
           'status',
           'created_at',
           'updated_at',
@@ -69,6 +70,64 @@ class veiculosController {
       console.error('Erro ao buscar veículos:', error);
       return res.status(500).json({
         erro: 'Erro ao buscar veículos. Tente novamente mais tarde.',
+      });
+    }
+  }
+
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+
+      const veiculo = await veiculos.findByPk(id, {
+        attributes: [
+          'id',
+          'placa',
+          'modelo',
+          'marca',
+          'cor',
+          'status',
+          'created_at',
+          'updated_at',
+        ], // Especifique os campos desejados
+      });
+
+      if (!veiculo) {
+        return res.status(404).json({ erro: 'Veículo não encontrado.' });
+      }
+
+      return res.status(200).json(veiculo);
+    } catch (error) {
+      console.error('Erro ao buscar veículo:', error);
+      return res.status(500).json({
+        erro: 'Erro ao buscar veículo. Tente novamente mais tarde.',
+      });
+    }
+  }
+
+  async updateStatus(req, res) {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      // Verifica se o status é válido
+      if (!['ativo', 'inativo', 'em manutenção'].includes(status)) {
+        return res.status(400).json({ erro: 'Status inválido.' });
+      }
+
+      const veiculo = await veiculos.findByPk(id);
+
+      if (!veiculo) {
+        return res.status(404).json({ erro: 'Veículo não encontrado.' });
+      }
+
+      veiculo.status = status;
+      await veiculo.save();
+
+      return res.status(200).json({ mensagem: 'Status atualizado com sucesso.', veiculo });
+    } catch (error) {
+      console.error('Erro ao atualizar status do veículo:', error);
+      return res.status(500).json({
+        erro: 'Erro ao atualizar status do veículo. Tente novamente mais tarde.',
       });
     }
   }
